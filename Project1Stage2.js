@@ -41,8 +41,8 @@ const App = () => {
     const[isVideoN,setIsVideoN]=useState(false);
     const[isVideoP,setIsVideoP]=useState(false);
     const[visibleItem,setVisibleItem]=useState(false);
-const[visibleN,setVisibleN]=useState(false);
-const[visibleP,setVisibleP]=useState(false);
+    const[visibleN,setVisibleN]=useState(false);
+    const[visibleP,setVisibleP]=useState(false);
 
     const X =5;
     const Y =3;
@@ -537,7 +537,7 @@ ref={flatListRef1}
 data={loadPhotosVideos}
 style={{ textAlign: 'center',  padding: 20,}}
 renderItem={({ item,index }) => {
-const isVideo = item.name.endsWith('.mp4');
+const isVideoVar = item.name.endsWith('.mp4');
 
 return (
 <TouchableOpacity onPress={() =>{ handlePress(item,loadPhotosVideos[index+1],loadPhotosVideos[index-1]);
@@ -548,7 +548,7 @@ return (
   <ImageBackground source={{ uri: 'file://' + item.path }} style={styles.image}>
     <View>
    
-      <Icon name={'camera'} size={20} color={isVideo ? 'red' : 'green'} />
+      <Icon name={'camera'} size={20} color={isVideoVar ? 'red' : 'green'} />
       
     </View>
   </ImageBackground>
@@ -576,7 +576,11 @@ refreshControl={
 const Screen4 = ({ navigation }) =>{
   useEffect(() => {
     if(passItem && (!visibleN &&!visibleP)){
-      if(passItem.path.split('.').pop()==="mp4"){setIsVideo(true);}
+      if(passItem.path.split('.').pop()==="mp4"){setIsVideo(true);
+        setIsVideoN(false);
+        setIsVideoP(false);
+
+      }
     setVisibleItem(true);
     setVisibleN(false);
     setVisibleP(false);
@@ -597,8 +601,7 @@ return (
   {visibleItem && ( isVideo ? (
     <View>
     <Video
-    source={{ uri: 'file://' + passItem.path}}
-   // source={require('../Resource/v1.mp4')} 
+    source={{ uri: 'file://' + passItem.path}} 
     style={styles.video}
 
     onBuffer={({ isBuffering }) => {
@@ -679,7 +682,7 @@ return (
      <View>
      <Video
      source={{ uri: 'file://' + nextItem.path}}
-    // source={require('../Resource/v1.mp4')} 
+    
      style={styles.video}
  
      onBuffer={({ isBuffering }) => {
@@ -689,8 +692,6 @@ return (
      controls
      ref={playerRef}
      paused={paused}
-     //onProgress={handleProgress}
- 
    />
  
  
@@ -761,20 +762,18 @@ return (
     (
        <View>
        <Video
-       source={{ uri: 'file://' + passItem.path}}
-      // source={require('../Resource/v1.mp4')} 
-       style={styles.video}
-   
-       onBuffer={({ isBuffering }) => {
-         console.log('Buffering', { isBuffering });
-       }}
-      
-       controls
-       ref={playerRef}
-       paused={paused}
-       //onProgress={handleProgress}
-   
-     />
+     source={{ uri: 'file://' + prevItem.path}}
+     style={styles.video}
+ 
+     onBuffer={({ isBuffering }) => {
+       console.log('Buffering', { isBuffering });
+     }}
+    
+     controls
+     ref={playerRef}
+     paused={paused}
+   />
+ 
    
    
        <View style={ {justifyContent: 'center',
@@ -854,7 +853,11 @@ return (
   onPress={() => {
      if (mediaIndex -1  >= 0 && mediaIndex - 1 < loadPhotosVideos.length) {
       if(prevItem)
-        if(prevItem.path.split('.').pop()==="mp4"){setIsVideoP(true);}  
+        if(prevItem.path.split('.').pop()==="mp4"){setIsVideoP(true);
+setIsVideoN(false);
+setIsVideo(false);
+
+        }  
      setVisibleItem(false);
      setVisibleN(false);
      setVisibleP(true);
@@ -869,7 +872,10 @@ return (
   
     if (mediaIndex + 1 >= 0 && mediaIndex + 1 < loadPhotosVideos.length) {
       if(nextItem)
-        if(nextItem.path.split('.').pop()==="mp4"){setIsVideoN(true);}
+        if(nextItem.path.split('.').pop()==="mp4"){setIsVideoN(true);
+          setIsVideoP(false);
+setIsVideo(false);
+        }
     
       setVisibleItem(false);
       setVisibleN(true);
