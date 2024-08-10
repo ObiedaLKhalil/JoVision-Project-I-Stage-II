@@ -1,0 +1,9 @@
+{
+  "name": "ReactNativPproject",
+  "displayName": "React Native Project",
+  "plugins": [
+    "expo-asset"
+  ]
+}
+
+
